@@ -27,7 +27,12 @@ class SplashScreen extends StatelessWidget {
                 AppConstants.cachedKey.onBoardingKey) {
               authRouter.navigateToSignIn();
             }
+
+            if (state.splashState.data == AppConstants.cachedKey.tokenKey) {
+              authRouter.navigateToHome();
+            }
           }
+
           if (status.isNoData) {
             onBoardingRouter.navigateToOnboarding();
           }

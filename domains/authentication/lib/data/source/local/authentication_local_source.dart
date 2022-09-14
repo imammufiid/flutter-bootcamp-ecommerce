@@ -8,6 +8,10 @@ abstract class AuthenticationLocalSource {
   Future<bool> cacheOnBoarding();
 
   Future<bool> getOnBoardingStatus();
+
+  Future<bool> cacheToken({required String token});
+
+  Future<String> getToken();
 }
 
 class AuthenticationLocalSourceImpl implements AuthenticationLocalSource {
@@ -26,9 +30,27 @@ class AuthenticationLocalSourceImpl implements AuthenticationLocalSource {
   @override
   Future<bool> getOnBoardingStatus() async {
     try {
-      return sharedPreferences.getBool(AppConstants.cachedKey.onBoardingKey) ?? false;
+      return sharedPreferences.getBool(AppConstants.cachedKey.onBoardingKey) ??
+          false;
     } catch (_) {
       throw DatabaseException(AppConstants.errorMessage.failedGetOnBoarding);
+    }
+  }
+
+  @override
+  Future<bool> cacheToken({required String token}) async {
+    return await sharedPreferences.setString(
+      AppConstants.cachedKey.tokenKey,
+      token,
+    );
+  }
+
+  @override
+  Future<String> getToken() async {
+    try {
+      return sharedPreferences.getString(AppConstants.cachedKey.tokenKey) ?? "";
+    } catch (_) {
+      throw DatabaseException(AppConstants.errorMessage.failedGetToken);
     }
   }
 }

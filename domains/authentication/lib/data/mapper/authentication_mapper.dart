@@ -8,7 +8,7 @@ class AuthenticationMapper {
           AuthRequestEntity authRequestEntity) =>
       AuthRequestDTO(
           username: authRequestEntity.username,
-          password: authRequestEntity.username);
+          password: authRequestEntity.password);
 
   AuthResponseEntity mapAuthResponseDTOToAuthResponseEntity(
           AuthResponseDTO authResponseDTO) =>

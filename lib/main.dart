@@ -1,9 +1,13 @@
+import 'package:auth/presentation/bloc/sign_in_bloc/sign_in_bloc.dart';
+import 'package:auth/presentation/bloc/sign_up_bloc/sign_up_bloc.dart';
+import 'package:auth/presentation/ui/sign_up_screen.dart';
 import 'package:common/utils/navigation/navigation_helper.dart';
 import 'package:common/utils/navigation/router/app_routes.dart';
 import 'package:dependencies/bloc/bloc.dart';
 import 'package:dependencies/firebase/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:dependencies/flutter_screenutil/flutter_screenutil.dart';
+import 'package:home_page/presentation/home_screen.dart';
 import 'package:onboarding/presentation/bloc/on_boarding_bloc/on_boarding_cubit.dart';
 import 'package:onboarding/presentation/bloc/splash_bloc/splash_cubit.dart';
 import 'package:onboarding/presentation/ui/on_boarding_screen.dart';
@@ -34,6 +38,7 @@ class MyApp extends StatelessWidget {
         home: BlocProvider(
           create: (_) => SplashCubit(
             getOnboardingStatusUseCase: sl(),
+            getTokenUseCase: sl(),
           )..initSplash(),
           child: SplashScreen(),
         ),
@@ -41,24 +46,36 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case AppRoutes.splash:
-              return MaterialPageRoute(
-                builder: (_) => SplashScreen(),
-              );
+              return MaterialPageRoute(builder: (_) => SplashScreen());
             case AppRoutes.onboarding:
               return MaterialPageRoute(
                 builder: (_) => BlocProvider(
-                  create: (_) => OnBoardingCubit(cacheOnboardingUseCase: sl()),
-                  child: OnBoardingScreen(),
-                ),
+                    create: (_) =>
+                        OnBoardingCubit(cacheOnboardingUseCase: sl()),
+                    child: OnBoardingScreen()),
               );
             case AppRoutes.signIn:
               return MaterialPageRoute(
-                builder: (_) => const SignInScreen(),
-              );
-            default:
+                  builder: (_) => BlocProvider(
+                        create: (_) => SignInBloc(
+                          signInUseCase: sl(),
+                          cacheTokenUseCase: sl(),
+                        ),
+                        child: SignInScreen(),
+                      ));
+            case AppRoutes.signUp:
               return MaterialPageRoute(
-                builder: (_) => SplashScreen(),
-              );
+                  builder: (_) => BlocProvider(
+                        create: (_) => SignUpBloc(
+                          signUpUseCase: sl(),
+                          cacheTokenUseCase: sl(),
+                        ),
+                        child: SignUpScreen(),
+                      ));
+            case AppRoutes.home:
+              return MaterialPageRoute(builder: (_) => const HomeScreen());
+            default:
+              return MaterialPageRoute(builder: (_) => SplashScreen());
           }
         },
       ),
