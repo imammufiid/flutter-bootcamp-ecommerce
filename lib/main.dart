@@ -7,7 +7,11 @@ import 'package:dependencies/bloc/bloc.dart';
 import 'package:dependencies/firebase/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:dependencies/flutter_screenutil/flutter_screenutil.dart';
-import 'package:home_page/presentation/home_screen.dart';
+import 'package:home_page/presentation/bloc/banner_bloc/banner_cubit.dart';
+import 'package:home_page/presentation/bloc/bottom_navigation_bloc/bottom_navigation_cubit.dart';
+import 'package:home_page/presentation/bloc/product_category_bloc/product_category_bloc.dart';
+import 'package:home_page/presentation/bloc/product_cubit/product_cubit.dart';
+import 'package:home_page/presentation/ui/bottom_navigation.dart';
 import 'package:onboarding/presentation/bloc/on_boarding_bloc/on_boarding_cubit.dart';
 import 'package:onboarding/presentation/bloc/splash_bloc/splash_cubit.dart';
 import 'package:onboarding/presentation/ui/on_boarding_screen.dart';
@@ -56,13 +60,14 @@ class MyApp extends StatelessWidget {
               );
             case AppRoutes.signIn:
               return MaterialPageRoute(
-                  builder: (_) => BlocProvider(
-                        create: (_) => SignInBloc(
-                          signInUseCase: sl(),
-                          cacheTokenUseCase: sl(),
-                        ),
-                        child: SignInScreen(),
-                      ));
+                builder: (_) => BlocProvider(
+                  create: (_) => SignInBloc(
+                    signInUseCase: sl(),
+                    cacheTokenUseCase: sl(),
+                  ),
+                  child: SignInScreen(),
+                ),
+              );
             case AppRoutes.signUp:
               return MaterialPageRoute(
                   builder: (_) => BlocProvider(
@@ -73,7 +78,27 @@ class MyApp extends StatelessWidget {
                         child: SignUpScreen(),
                       ));
             case AppRoutes.home:
-              return MaterialPageRoute(builder: (_) => const HomeScreen());
+              return MaterialPageRoute(
+                builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(create: (_) => BottomNavigationCubit()),
+                    BlocProvider(
+                      create: (_) =>
+                          BannerCubit(bannerUseCase: sl())..getBanners(),
+                    ),
+                    BlocProvider(
+                      create: (_) =>
+                          ProductCubit(productUseCase: sl())..getProducts(),
+                    ),
+                    BlocProvider(
+                      create: (_) =>
+                          ProductCategoryCubit(productCategoryUseCase: sl())
+                            ..getProductCategories(),
+                    ),
+                  ],
+                  child: const BottomNavigation(),
+                ),
+              );
             default:
               return MaterialPageRoute(builder: (_) => SplashScreen());
           }
