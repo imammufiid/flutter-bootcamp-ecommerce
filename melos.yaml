@@ -1,8 +1,0 @@
-name: flutter_e_commerce
-
-packages:
-  - domains/**
-  - features/**
-  - resources/**
-  - shared_libraries/**
-  - '*'
