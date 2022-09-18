@@ -1,0 +1,32 @@
+import 'package:common/utils/state/view_data_state.dart';
+import 'package:common/utils/use_case/use_case.dart';
+import 'package:dependencies/bloc/bloc.dart';
+import 'package:home_page/presentation/bloc/product_cubit/product_state.dart';
+import 'package:product/domain/usecase/get_product_usecase.dart';
+
+class ProductCubit extends Cubit<ProductState> {
+  final GetProductUseCase productUseCase;
+
+  ProductCubit({required this.productUseCase})
+      : super(ProductState(productState: ViewData.initial()));
+
+  void getProducts() async {
+    emit(ProductState(productState: ViewData.loading()));
+    final result = await productUseCase(const NoParams());
+    result.fold(
+      (failure) => emit(
+        ProductState(
+          productState: ViewData.error(
+            message: failure.errorMessage,
+            failure: failure,
+          ),
+        ),
+      ),
+      (result) => emit(
+        ProductState(
+          productState: ViewData.loaded(data: result),
+        ),
+      ),
+    );
+  }
+}
