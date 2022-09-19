@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class UserResponseDTO {
   UserResponseDTO({
     this.status,
@@ -13,12 +11,12 @@ class UserResponseDTO {
   String? message;
   UserDataDTO? data;
 
-  factory UserResponseDto.fromJson(Map<String, dynamic> json) =>
+  factory UserResponseDTO.fromJson(Map<String, dynamic> json) =>
       UserResponseDTO(
         status: json["status"],
         code: json["code"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: UserDataDTO.fromJson(json["data"]),
       );
 }
 
@@ -41,7 +39,7 @@ class UserDataDTO {
   String? city;
   String? simpleAddress;
 
-  factory Data.fromJson(Map<String, dynamic> json) => UserDataDTO(
+  factory UserDataDTO.fromJson(Map<String, dynamic> json) => UserDataDTO(
         id: json["id"],
         username: json["username"],
         role: json["role"],

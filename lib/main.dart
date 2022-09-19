@@ -1,3 +1,9 @@
+import 'package:account/presentation/bloc/logout_bloc/logout_cubit.dart';
+import 'package:account/presentation/bloc/update_photo_bloc/update_photo_cubit.dart';
+import 'package:account/presentation/bloc/update_profile_bloc/update_profile_bloc.dart';
+import 'package:account/presentation/bloc/user_bloc/user_cubit.dart';
+import 'package:account/presentation/bloc/user_bloc/user_cubit.dart';
+import 'package:account/presentation/ui/screen/update_profile_screen.dart';
 import 'package:auth/presentation/bloc/sign_in_bloc/sign_in_bloc.dart';
 import 'package:auth/presentation/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:auth/presentation/ui/sign_up_screen.dart';
@@ -95,8 +101,32 @@ class MyApp extends StatelessWidget {
                           ProductCategoryCubit(productCategoryUseCase: sl())
                             ..getProductCategories(),
                     ),
+                    BlocProvider(
+                      create: (_) => UserCubit(getUserUseCase: sl())..getUser(),
+                    ),
+                    BlocProvider(
+                        create: (_) => LogoutCubit(logoutUseCase: sl()))
                   ],
                   child: const BottomNavigation(),
+                ),
+              );
+            case AppRoutes.editProfile:
+              return MaterialPageRoute(
+                builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (_) => UserCubit(getUserUseCase: sl())..getUser(),
+                    ),
+                    BlocProvider(
+                      create: (_) => UpdateProfileBloc(
+                          updateUserUseCase: sl(), firebaseMessaging: sl()),
+                    ),
+                    BlocProvider(
+                      create: (_) => UpdatePhotoCubit(
+                          imagePicker: sl(), uploadPhotoUseCase: sl()),
+                    )
+                  ],
+                  child: UpdateProfileScreen(),
                 ),
               );
             default:

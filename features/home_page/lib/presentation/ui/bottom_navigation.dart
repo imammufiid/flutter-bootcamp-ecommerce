@@ -1,3 +1,4 @@
+import 'package:account/presentation/ui/screen/account_screen.dart';
 import 'package:dependencies/bloc/bloc.dart';
 import 'package:dependencies/flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,7 @@ class BottomNavigation extends StatelessWidget {
                 Container(
                   color: Colors.blue,
                 ),
-                Container(
-                  color: Colors.amber,
-                ),
+                AccountScreen(),
               ],
             ),
           ),

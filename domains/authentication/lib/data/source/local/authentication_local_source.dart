@@ -12,6 +12,8 @@ abstract class AuthenticationLocalSource {
   Future<bool> cacheToken({required String token});
 
   Future<String> getToken();
+
+  Future<bool> removeUserData();
 }
 
 class AuthenticationLocalSourceImpl implements AuthenticationLocalSource {
@@ -52,5 +54,12 @@ class AuthenticationLocalSourceImpl implements AuthenticationLocalSource {
     } catch (_) {
       throw DatabaseException(AppConstants.errorMessage.failedGetToken);
     }
+  }
+
+  @override
+  Future<bool> removeUserData() async {
+    final tokenResult =
+        await sharedPreferences.remove(AppConstants.cachedKey.tokenKey);
+    return tokenResult;
   }
 }
