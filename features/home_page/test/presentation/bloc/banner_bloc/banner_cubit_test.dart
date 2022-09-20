@@ -33,9 +33,7 @@ void testBannerCubit() {
       'emits [loading and loaded] when getBanner is call',
       build: () {
         when(
-          () => _mockGetBannerUseCase.call(
-            const NoParams(),
-          ),
+          () => _mockGetBannerUseCase.call(const NoParams()),
         ).thenAnswer((_) async => Right(bannerEntityDummy));
         return BannerCubit(bannerUseCase: _mockGetBannerUseCase);
       },
@@ -50,11 +48,10 @@ void testBannerCubit() {
       'emits [loading and error] when getBanner is added',
       build: () {
         when(
-          () => _mockGetBannerUseCase.call(
-            const NoParams(),
-          ),
+          () => _mockGetBannerUseCase.call(const NoParams()),
         ).thenAnswer(
-            (_) async => const Left(FailureResponse(errorMessage: '')));
+          (_) async => const Left(FailureResponse(errorMessage: '')),
+        );
         return BannerCubit(bannerUseCase: _mockGetBannerUseCase);
       },
       act: (BannerCubit bloc) => bloc.getBanners(),
