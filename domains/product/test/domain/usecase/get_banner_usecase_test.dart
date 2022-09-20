@@ -2,6 +2,7 @@ import 'package:common/utils/error/failure_response.dart';
 import 'package:common/utils/use_case/use_case.dart';
 import 'package:dependencies/dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:product/domain/entity/response/banner_data_entity.dart';
 import 'package:product/domain/repository/product_repository.dart';
 import 'package:product/domain/usecase/get_banner_usecase.dart';

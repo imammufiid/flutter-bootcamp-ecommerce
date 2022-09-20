@@ -1,7 +1,7 @@
 import 'package:dependencies/dartz/dartz.dart';
 import 'package:dependencies/dio/dio.dart';
-import 'package:dependencies/mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:product/data/mapper/product_mapper.dart';
 import 'package:product/data/repository/product_repository_impl.dart';
 import 'package:product/data/source/remote/product_remote_source.dart';

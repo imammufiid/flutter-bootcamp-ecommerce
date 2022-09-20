@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:common/utils/error/failure_response.dart';
 import 'package:dependencies/dio/dio.dart';
-import 'package:dependencies/mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:product/data/source/remote/product_remote_source.dart';
 
 import '../../../json_reader.dart';
