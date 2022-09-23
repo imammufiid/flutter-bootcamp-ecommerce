@@ -25,7 +25,7 @@ class BottomNavigation extends StatelessWidget {
             child: IndexedStack(
               index: homeCubit.state.homeState.data,
               children: [
-                const HomeScreen(),
+                HomeScreen(),
                 Container(
                   color: Colors.blue,
                 ),

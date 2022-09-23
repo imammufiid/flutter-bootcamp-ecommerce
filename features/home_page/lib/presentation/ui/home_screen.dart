@@ -1,10 +1,14 @@
+import 'package:common/utils/navigation/argument/detail_product/detail_product_argument.dart';
+import 'package:common/utils/navigation/router/home_router.dart';
 import 'package:common/utils/state/view_data_state.dart';
+import 'package:component/widget/appbar/custom_appbar.dart';
 import 'package:component/widget/card/banner_card.dart';
 import 'package:component/widget/card/product_card.dart';
 import 'package:component/widget/card/product_category_card.dart';
 import 'package:component/widget/progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:dependencies/bloc/bloc.dart';
 import 'package:dependencies/flutter_screenutil/flutter_screenutil.dart';
+import 'package:dependencies/get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:home_page/presentation/bloc/banner_bloc/banner_cubit.dart';
 import 'package:home_page/presentation/bloc/banner_bloc/banner_state.dart';
@@ -16,58 +20,16 @@ import 'package:resources/assets.gen.dart';
 import 'package:resources/colors.gen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
+
+  final HomeRouter _homeRouter = sl();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorName.white,
-      appBar: AppBar(
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: SizedBox(
-                height: 35.h,
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(
-                      Icons.search_rounded,
-                      color: ColorName.iconGrey,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(1.5),
-                      borderSide:
-                          const BorderSide(width: 0, style: BorderStyle.none),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 13.0,
-                      vertical: 5.0,
-                    ),
-                    hintText: "Sepatu Olahraga",
-                    hintStyle: TextStyle(
-                        color: ColorName.textFieldHintGrey,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400),
-                    hoverColor: ColorName.orange,
-                    focusColor: ColorName.orange,
-                    filled: true,
-                    fillColor: ColorName.textFieldBackgroundGrey,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 19.w,
-            ),
-            InkWell(
-              onTap: () {},
-              child: Assets.images.icon.cart.svg(width: 24.w, height: 24.h),
-            )
-          ],
-        ),
-        elevation: 0.0,
-        backgroundColor: ColorName.white,
+      appBar: CustomAppBar(
+        onPressed: () {},
       ),
       body: ListView(
         children: [
@@ -141,7 +103,13 @@ class HomeScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: products.length,
                     itemBuilder: (context, index) {
-                      return ProductCard(productEntity: products[index]);
+                      final product = products[index];
+                      final productId = product.id;
+                      return ProductCard(
+                        productEntity: product,
+                        onPressed: () => _homeRouter.navigateToDetailProduct(
+                            DetailProductArgument(productId: productId)),
+                      );
                     },
                   );
                 } else if (status.isError) {

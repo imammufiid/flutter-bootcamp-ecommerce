@@ -2,7 +2,9 @@ import 'package:common/utils/constants/app_constants.dart';
 import 'package:dependencies/dio/dio.dart';
 import 'package:product/data/model/response/banner_response_dto.dart';
 import 'package:product/data/model/response/product_category_response_dto.dart';
+import 'package:product/data/model/response/product_detail_response_dto.dart';
 import 'package:product/data/model/response/product_response_dto.dart';
+import 'package:product/data/model/response/seller_response_dto.dart';
 
 abstract class ProductRemoteSource {
   const ProductRemoteSource();
@@ -12,6 +14,10 @@ abstract class ProductRemoteSource {
   Future<ProductResponseDTO> getProducts();
 
   Future<BannerResponseDto> getBanners();
+
+  Future<ProductDetailResponseDto> getProductDetail(String productId);
+
+  Future<SellerResponseDto> getSeller(String sellerId);
 }
 
 class ProductRemoteSourceImpl extends ProductRemoteSource {
@@ -44,6 +50,29 @@ class ProductRemoteSourceImpl extends ProductRemoteSource {
     try {
       final response = await dio.get(AppConstants.appApi.category);
       return ProductCategoryResponseDTO.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ProductDetailResponseDto> getProductDetail(String productId) async {
+    try {
+      final response = await dio.get(
+        AppConstants.appApi.detailProduct,
+        queryParameters: {"product_id": productId},
+      );
+      return ProductDetailResponseDto.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SellerResponseDto> getSeller(String sellerId) async {
+    try {
+      final response = await dio.get(AppConstants.appApi.seller + sellerId);
+      return SellerResponseDto.fromJson(response.data);
     } catch (e) {
       rethrow;
     }

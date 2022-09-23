@@ -6,7 +6,9 @@ import 'package:product/data/mapper/product_mapper.dart';
 import 'package:product/data/source/remote/product_remote_source.dart';
 import 'package:product/domain/entity/response/banner_data_entity.dart';
 import 'package:product/domain/entity/response/product_category_entity.dart';
+import 'package:product/domain/entity/response/product_detail_entity.dart';
 import 'package:product/domain/entity/response/product_entity.dart';
+import 'package:product/domain/entity/response/seller_data_entity.dart';
 import 'package:product/domain/repository/product_repository.dart';
 
 class ProductRepositoryImpl extends ProductRepository {
@@ -56,6 +58,40 @@ class ProductRepositoryImpl extends ProductRepository {
     try {
       final response = await remoteSource.getProducts();
       return Right(mapper.mapProductDataDtoToProductDataEntity(response.data!));
+    } on DioError catch (error) {
+      return Left(
+        FailureResponse(
+          errorMessage:
+              error.response?.data[AppConstants.errorKey.message]?.toString() ??
+                  error.response.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<FailureResponse, ProductDetailDataEntity>> getProductDetail(
+      String productId) async {
+    try {
+      final response = await remoteSource.getProductDetail(productId);
+      return Right(mapper.mapProductDetailDataDtoToEntity(response.data!));
+    } on DioError catch (error) {
+      return Left(
+        FailureResponse(
+          errorMessage:
+              error.response?.data[AppConstants.errorKey.message]?.toString() ??
+                  error.response.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<FailureResponse, SellerDataEntity>> getSeller(
+      String sellerId) async {
+    try {
+      final response = await remoteSource.getSeller(sellerId);
+      return Right(mapper.mapSellerDataResponseDtoToEntity(response.data!));
     } on DioError catch (error) {
       return Left(
         FailureResponse(
