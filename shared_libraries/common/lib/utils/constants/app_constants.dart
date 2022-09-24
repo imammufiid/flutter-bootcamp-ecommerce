@@ -36,10 +36,6 @@ class AppApi {
   String get product => 'customer/product?per_page=20';
 
   String get category => 'category';
-
-  String get detailProduct => "customer/product";
-
-  String get seller => "customer/seller/";
 }
 
 class ErrorKey {

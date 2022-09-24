@@ -2,17 +2,15 @@ import 'package:account/presentation/bloc/logout_bloc/logout_cubit.dart';
 import 'package:account/presentation/bloc/update_photo_bloc/update_photo_cubit.dart';
 import 'package:account/presentation/bloc/update_profile_bloc/update_profile_bloc.dart';
 import 'package:account/presentation/bloc/user_bloc/user_cubit.dart';
+import 'package:account/presentation/bloc/user_bloc/user_cubit.dart';
 import 'package:account/presentation/ui/screen/update_profile_screen.dart';
 import 'package:auth/presentation/bloc/sign_in_bloc/sign_in_bloc.dart';
 import 'package:auth/presentation/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:auth/presentation/ui/sign_up_screen.dart';
-import 'package:common/utils/navigation/argument/arguments.dart';
 import 'package:common/utils/navigation/navigation_helper.dart';
 import 'package:common/utils/navigation/router/app_routes.dart';
 import 'package:dependencies/bloc/bloc.dart';
 import 'package:dependencies/firebase/firebase.dart';
-import 'package:detail_product/presentation/bloc/product_detail_bloc/bloc.dart';
-import 'package:detail_product/presentation/ui/detail_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dependencies/flutter_screenutil/flutter_screenutil.dart';
 import 'package:home_page/presentation/bloc/banner_bloc/banner_cubit.dart';
@@ -78,14 +76,13 @@ class MyApp extends StatelessWidget {
               );
             case AppRoutes.signUp:
               return MaterialPageRoute(
-                builder: (_) => BlocProvider(
-                  create: (_) => SignUpBloc(
-                    signUpUseCase: sl(),
-                    cacheTokenUseCase: sl(),
-                  ),
-                  child: SignUpScreen(),
-                ),
-              );
+                  builder: (_) => BlocProvider(
+                        create: (_) => SignUpBloc(
+                          signUpUseCase: sl(),
+                          cacheTokenUseCase: sl(),
+                        ),
+                        child: SignUpScreen(),
+                      ));
             case AppRoutes.home:
               return MaterialPageRoute(
                 builder: (_) => MultiBlocProvider(
@@ -130,17 +127,6 @@ class MyApp extends StatelessWidget {
                     )
                   ],
                   child: UpdateProfileScreen(),
-                ),
-              );
-            case AppRoutes.detailProduct:
-              final argument = settings.arguments as DetailProductArgument;
-              return MaterialPageRoute(
-                builder: (_) => BlocProvider(
-                  create: (_) => ProductDetailCubit(
-                    getProductDetailUseCase: sl(),
-                    getSellerUseCase: sl(),
-                  ),
-                  child: DetailProductScreen(argument: argument),
                 ),
               );
             default:
