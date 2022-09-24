@@ -56,4 +56,120 @@ void testProductRemoteSourceTest() {
 
     expect(() => productRemoteSource.getBanners(), throwsException);
   });
+
+  test('''Success \n
+    GIVEN fetch data product category from API with 200 status code
+    WHEN getProductCategories method execute
+    THEN return List<ProductCategoryResponseDTO>
+  ''', () async {
+    final responseJson =
+        TestHelper.readJson('helper/json/product_categories.json');
+    final httpResponse =
+        ResponseBody.fromString(responseJson, HttpStatus.ok, headers: {
+      Headers.contentTypeHeader: [Headers.jsonContentType],
+    });
+
+    when(() => dioAdapterMock.fetch(any(), any(), any()))
+        .thenAnswer((_) async => httpResponse);
+
+    final result = await productRemoteSource.getProductCategories();
+    expect(result.data!.length, 6);
+  });
+
+  test('''Fail \n
+    GIVEN fetch data product category with 500 status code
+    WHEN getProductCategories method execute
+    THEN return throwException  
+  ''', () async {
+    when(() => dioAdapterMock.fetch(any(), any(), any())).thenThrow(
+        const FailureResponse(errorMessage: "internal server error"));
+
+    expect(() => productRemoteSource.getProductCategories(), throwsException);
+  });
+
+  test('''Success \n
+    GIVEN fetch data product category from API with 200 status code
+    WHEN getProducts method execute
+    THEN return List<ProductResponseDTO>
+  ''', () async {
+    final responseJson = TestHelper.readJson('helper/json/products.json');
+    final httpResponse =
+        ResponseBody.fromString(responseJson, HttpStatus.ok, headers: {
+      Headers.contentTypeHeader: [Headers.jsonContentType],
+    });
+
+    when(() => dioAdapterMock.fetch(any(), any(), any()))
+        .thenAnswer((_) async => httpResponse);
+
+    final result = await productRemoteSource.getProducts();
+    expect(result.data?.countPerPage, 4);
+    expect(result.data?.data?.length, 4);
+  });
+
+  test('''Fail \n
+    GIVEN fetch data product category with 500 status code
+    WHEN getProducts method execute
+    THEN return throwException  
+  ''', () async {
+    when(() => dioAdapterMock.fetch(any(), any(), any())).thenThrow(
+        const FailureResponse(errorMessage: "internal server error"));
+
+    expect(() => productRemoteSource.getProducts(), throwsException);
+  });
+
+  test('''Success \t
+    GIVEN fetch data product detail from API with 200 status code
+    WHEN getProductDetail(id) method execute
+    THEN return ProductDetailResponseDto
+  ''', () async {
+    final responseJson = TestHelper.readJson('helper/json/product_detail.json');
+    final httpResponse =
+        ResponseBody.fromString(responseJson, HttpStatus.ok, headers: {
+      Headers.contentTypeHeader: [Headers.jsonContentType],
+    });
+    when(() => dioAdapterMock.fetch(any(), any(), any()))
+        .thenAnswer((_) async => httpResponse);
+
+    final result = await productRemoteSource.getProductDetail("1");
+    expect(result.data?.name, "Meja Antik");
+  });
+
+  test('''Fail \n
+    GIVEN fetch data product detail with 500 status code
+    WHEN getProductDetail(id) method execute
+    THEN return throwException  
+  ''', () async {
+    when(() => dioAdapterMock.fetch(any(), any(), any())).thenThrow(
+        const FailureResponse(errorMessage: "internal server error"));
+
+    expect(() => productRemoteSource.getProductDetail("1"), throwsException);
+  });
+
+  test('''Success \t
+    GIVEN fetch data seller from API with 200 status code
+    WHEN getSeller(id) method execute
+    THEN return ProductDetailResponseDto
+  ''', () async {
+    final responseJson = TestHelper.readJson('helper/json/seller.json');
+    final httpResponse =
+        ResponseBody.fromString(responseJson, HttpStatus.ok, headers: {
+      Headers.contentTypeHeader: [Headers.jsonContentType],
+    });
+    when(() => dioAdapterMock.fetch(any(), any(), any()))
+        .thenAnswer((_) async => httpResponse);
+
+    final result = await productRemoteSource.getSeller("1");
+    expect(result.data?.username, "parjo_store");
+  });
+
+  test('''Fail \n
+    GIVEN fetch data seller with 500 status code
+    WHEN getSeller(id) method execute
+    THEN return throwException  
+  ''', () async {
+    when(() => dioAdapterMock.fetch(any(), any(), any())).thenThrow(
+        const FailureResponse(errorMessage: "internal server error"));
+
+    expect(() => productRemoteSource.getSeller("1"), throwsException);
+  });
 }
