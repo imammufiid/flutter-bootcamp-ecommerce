@@ -5,6 +5,7 @@ import 'package:cart/domain/usecase/get_carts_usecase.dart';
 import 'package:cart_feature/presentation/bloc/bloc.dart';
 import 'package:common/utils/error/failure_response.dart';
 import 'package:common/utils/state/view_data_state.dart';
+import 'package:common/utils/use_case/use_case.dart';
 import 'package:dependencies/bloc/bloc.dart';
 
 class CartCubit extends Cubit<CartState> {
@@ -44,9 +45,27 @@ class CartCubit extends Cubit<CartState> {
 
   void selectProduct(bool selected, int index) {}
 
-  void getCarts() async {}
+  void getCarts() async {
+    emit(state.copyWith(cartListState: ViewData.loading()));
+    final result = await getCartsUseCase.call(const NoParams());
+    result.fold(
+      (failure) => _onFailureGetCart(failure),
+      (result) => _onSuccessGetCart(result),
+    );
+  }
 
-  Future<void> _onFailureGetCart(FailureResponse failure) async {}
+  Future<void> _onFailureGetCart(FailureResponse failure) async {
+    emit(state.copyWith(
+      cartListState:
+          ViewData.error(message: failure.errorMessage, failure: failure),
+    ));
+  }
 
-  Future<void> _onSuccessGetCart(CartDataEntity data) async {}
+  Future<void> _onSuccessGetCart(CartDataEntity data) async {
+    if (data.product.isEmpty) {
+      emit(state.copyWith(cartListState: ViewData.noData(message: "No Data")));
+    } else {
+      emit(state.copyWith(cartListState: ViewData.loaded(data: data)));
+    }
+  }
 }

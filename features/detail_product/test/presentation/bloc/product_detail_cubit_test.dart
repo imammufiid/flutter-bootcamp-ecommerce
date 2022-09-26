@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:cart/domain/usecase/add_to_cart_usecase.dart';
 import 'package:common/utils/error/failure_response.dart';
 import 'package:common/utils/state/view_data_state.dart';
 import 'package:dependencies/dartz/dartz.dart';
@@ -17,13 +18,17 @@ class MockGetProductDetailUseCase extends Mock
 
 class MockGetSellerUseCase extends Mock implements GetSellerUseCase {}
 
+class MockAddToCartUseCase extends Mock implements AddToCartUseCase {}
+
 void testProductDetail() {
   late final GetProductDetailUseCase mockGetProductDetailUseCase;
   late final GetSellerUseCase mockGetSellerUseCase;
+  late final MockAddToCartUseCase mockAddToCartUseCase;
 
   setUpAll(() {
     mockGetProductDetailUseCase = MockGetProductDetailUseCase();
     mockGetSellerUseCase = MockGetSellerUseCase();
+    mockAddToCartUseCase = MockAddToCartUseCase();
   });
 
   group('Product Detail Cubit', () {
@@ -32,6 +37,7 @@ void testProductDetail() {
       build: () => ProductDetailCubit(
         getProductDetailUseCase: mockGetProductDetailUseCase,
         getSellerUseCase: mockGetSellerUseCase,
+        addToCartUseCase: mockAddToCartUseCase,
       ),
       expect: () => [],
     );
@@ -55,23 +61,30 @@ void testProductDetail() {
         return ProductDetailCubit(
           getProductDetailUseCase: mockGetProductDetailUseCase,
           getSellerUseCase: mockGetSellerUseCase,
+          addToCartUseCase: mockAddToCartUseCase,
         );
       },
       act: (ProductDetailCubit bloc) => bloc.getProduct("1"),
       expect: () => [
         ProductDetailState(
-            productState: ViewData.loading(), sellerState: ViewData.initial()),
+          productState: ViewData.loading(),
+          sellerState: ViewData.initial(),
+          addToCartState: ViewData.initial(),
+        ),
         ProductDetailState(
           productState: ViewData.loaded(data: productDetailDummy),
           sellerState: ViewData.initial(),
+          addToCartState: ViewData.initial(),
         ),
         ProductDetailState(
           productState: ViewData.loaded(data: productDetailDummy),
           sellerState: ViewData.loading(),
+          addToCartState: ViewData.initial(),
         ),
         ProductDetailState(
           productState: ViewData.loaded(data: productDetailDummy),
           sellerState: ViewData.loaded(data: sellerDataDummy),
+          addToCartState: ViewData.initial(),
         ),
       ],
     );
@@ -90,18 +103,23 @@ void testProductDetail() {
         return ProductDetailCubit(
           getProductDetailUseCase: mockGetProductDetailUseCase,
           getSellerUseCase: mockGetSellerUseCase,
+          addToCartUseCase: mockAddToCartUseCase,
         );
       },
       act: (ProductDetailCubit bloc) => bloc.getProduct("1"),
       expect: () => [
         ProductDetailState(
-            productState: ViewData.loading(), sellerState: ViewData.initial()),
+          productState: ViewData.loading(),
+          sellerState: ViewData.initial(),
+          addToCartState: ViewData.initial(),
+        ),
         ProductDetailState(
           productState: ViewData.error(
             message: '',
             failure: const FailureResponse(errorMessage: ''),
           ),
           sellerState: ViewData.initial(),
+          addToCartState: ViewData.initial(),
         ),
       ],
     );
@@ -125,19 +143,25 @@ void testProductDetail() {
         return ProductDetailCubit(
           getProductDetailUseCase: mockGetProductDetailUseCase,
           getSellerUseCase: mockGetSellerUseCase,
+          addToCartUseCase: mockAddToCartUseCase,
         );
       },
       act: (ProductDetailCubit bloc) => bloc.getProduct("1"),
       expect: () => [
         ProductDetailState(
-            productState: ViewData.loading(), sellerState: ViewData.initial()),
+          productState: ViewData.loading(),
+          sellerState: ViewData.initial(),
+          addToCartState: ViewData.initial(),
+        ),
         ProductDetailState(
           productState: ViewData.loaded(data: productDetailDummy),
           sellerState: ViewData.initial(),
+          addToCartState: ViewData.initial(),
         ),
         ProductDetailState(
           productState: ViewData.loaded(data: productDetailDummy),
           sellerState: ViewData.loading(),
+          addToCartState: ViewData.initial(),
         ),
         ProductDetailState(
           productState: ViewData.loaded(data: productDetailDummy),
@@ -145,6 +169,7 @@ void testProductDetail() {
             message: '',
             failure: const FailureResponse(errorMessage: ''),
           ),
+          addToCartState: ViewData.initial(),
         ),
       ],
     );

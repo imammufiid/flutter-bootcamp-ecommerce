@@ -11,8 +11,7 @@ class DeleteCartUseCase extends UseCase<CartDataEntity, AddToCartEntity> {
   DeleteCartUseCase({required this.repository});
 
   @override
-  Future<Either<FailureResponse, CartDataEntity>> call(AddToCartEntity params) {
-    // TODO: implement call
-    throw UnimplementedError();
-  }
+  Future<Either<FailureResponse, CartDataEntity>> call(
+          AddToCartEntity params) async =>
+      await repository.deleteCart(params);
 }

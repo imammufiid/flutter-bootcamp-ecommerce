@@ -42,7 +42,10 @@ class PaymentButton extends StatelessWidget {
                     child: CustomButton(
                       buttonText: "Keranjang",
                       buttonColor: ColorName.orange,
-                      onTap: onPressedCart,
+                      onTap: () {
+                        print("asdfasdfasdf");
+                        onPressedCart;
+                      },
                     ),
                   ),
                 ],

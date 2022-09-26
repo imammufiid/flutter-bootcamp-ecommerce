@@ -1,5 +1,6 @@
 import 'package:common/utils/navigation/argument/detail_product/detail_product_argument.dart';
 import 'package:common/utils/navigation/router/home_router.dart';
+import 'package:common/utils/navigation/router/product_routes.dart';
 import 'package:common/utils/state/view_data_state.dart';
 import 'package:component/widget/appbar/custom_appbar.dart';
 import 'package:component/widget/card/banner_card.dart';
@@ -23,13 +24,14 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   final HomeRouter _homeRouter = sl();
+  final ProductRoutes _productRoutes = sl();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorName.white,
       appBar: CustomAppBar(
-        onPressed: () {},
+        onPressed: () => _productRoutes.navigateToCartList(),
       ),
       body: ListView(
         children: [

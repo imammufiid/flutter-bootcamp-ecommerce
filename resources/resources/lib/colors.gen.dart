@@ -43,6 +43,9 @@ class ColorName {
   /// Color: #AAAAAA
   static const Color textLightGrey = Color(0xFFAAAAAA);
 
+  /// Color: #414141
+  static const Color textDarkGrey = Color(0xFF414141);
+
   /// Color: #FFFFFF
   static const Color white = Color(0xFFFFFFFF);
 

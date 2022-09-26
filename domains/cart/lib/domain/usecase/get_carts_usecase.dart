@@ -10,8 +10,6 @@ class GetCartsUseCase extends UseCase<CartDataEntity, NoParams> {
   GetCartsUseCase({required this.repository});
 
   @override
-  Future<Either<FailureResponse, CartDataEntity>> call(NoParams params) {
-    // TODO: implement call
-    throw UnimplementedError();
-  }
+  Future<Either<FailureResponse, CartDataEntity>> call(NoParams params) async =>
+      await repository.getCarts();
 }
