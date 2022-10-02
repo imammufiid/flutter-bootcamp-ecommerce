@@ -1,3 +1,4 @@
+import 'package:cart/domain/entity/request/add_to_cart_entity.dart';
 import 'package:cart/domain/entity/response/cart_entity.dart';
 import 'package:cart/domain/usecase/add_to_cart_usecase.dart';
 import 'package:cart/domain/usecase/delete_cart_usecase.dart';
@@ -26,24 +27,148 @@ class CartCubit extends Cubit<CartState> {
   void deleteProduct({
     required String productId,
     required int amount,
-  }) {}
+    required int index,
+  }) async {
+    emit(state.copyWith(deleteCartState: ViewData.loading()));
+    final result = await deleteCartUseCase
+        .call(AddToCartEntity(productId: productId, amount: amount));
+    return result.fold(
+      (failure) => _onFailureDeleteCart(failure),
+      (result) => _onSuccessDeleteCart(result, index),
+    );
+  }
 
-  Future<void> _onFailureDeleteCart(FailureResponse failure) async {}
+  Future<void> _onFailureDeleteCart(FailureResponse failure) async {
+    emit(state.copyWith(
+      deleteCartState:
+          ViewData.error(message: failure.errorMessage, failure: failure),
+    ));
+  }
 
-  Future<void> _onSuccessDeleteCart(CartDataEntity data) async {}
+  Future<void> _onSuccessDeleteCart(CartDataEntity data, int index) async {
+    if (data.product.isEmpty) {
+      emit(state.copyWith(
+        deleteCartState: ViewData.noData(message: "No Data"),
+        cartListState: ViewData.noData(message: "No Data"),
+      ));
+    } else {
+      int amount = 0;
+      if (state.selectAll || state.selectProducts[index]) {
+        amount = state.totalAmount - data.product[index].product.price;
+      } else {
+        amount = state.totalAmount;
+      }
+
+      if (!state.selectProducts[index]) {
+        amount = state.totalAmount;
+      }
+
+      emit(state.copyWith(
+        totalAmount: amount,
+        deleteCartState: ViewData.loaded(data: data),
+        cartListState: ViewData.loaded(data: data),
+      ));
+    }
+  }
 
   void addProduct({
     required String productId,
     required int amount,
-  }) {}
+    required int index,
+  }) async {
+    emit(state.copyWith(addCartState: ViewData.loading()));
+    final product = AddToCartEntity(productId: productId, amount: amount);
+    final result = await addToCartUseCase.call(product);
+    return result.fold(
+      (failure) => _onFailureAddCart(failure),
+      (result) => _onSuccessAddCart(result, index),
+    );
+  }
 
-  Future<void> _onFailureAddCart(FailureResponse failure) async {}
+  Future<void> _onFailureAddCart(FailureResponse failure) async {
+    emit(state.copyWith(
+      addCartState:
+          ViewData.error(message: failure.errorMessage, failure: failure),
+    ));
+  }
 
-  Future<void> _onSuccessAddCart(CartDataEntity data) async {}
+  Future<void> _onSuccessAddCart(CartDataEntity data, int index) async {
+    int amount = 0;
+    if (state.selectAll || state.selectProducts[index]) {
+      amount = state.totalAmount + data.product[index].product.price;
+    } else {
+      amount = state.totalAmount;
+    }
 
-  void selectAll(bool selected) {}
+    if (!state.selectProducts[index]) {
+      amount = state.totalAmount;
+    }
+    emit(state.copyWith(
+      totalAmount: amount,
+      addCartState: ViewData.loaded(data: data),
+      cartListState: ViewData.loaded(data: data),
+    ));
+  }
 
-  void selectProduct(bool selected, int index) {}
+  void selectAll(bool selected) {
+    if (selected) {
+      var data = state.cartListState.data?.product
+          .map((e) => (e.product.price * e.quantity))
+          .reduce((value, element) => value + element);
+      var selectProduct =
+          state.cartListState.data?.product.map((_) => true).toList();
+
+      emit(state.copyWith(
+        totalAmount: data,
+        selectAll: selected,
+        selectProducts: selectProduct,
+      ));
+    } else {
+      var selectProduct =
+          state.cartListState.data?.product.map((_) => false).toList();
+      emit(state.copyWith(
+        totalAmount: 0,
+        selectAll: false,
+        selectProducts: selectProduct,
+      ));
+    }
+  }
+
+  void selectProduct(bool selected, int index) {
+    /// tmp
+    int amount = 0;
+    final selectProduct = <bool>[];
+
+    /// from state
+    final productState = state.cartListState.data?.product ?? [];
+    final selectProductState = state.selectProducts;
+    final totalAmountState = state.totalAmount;
+
+    /// set data
+    selectProduct.addAll(selectProductState);
+    selectProduct[index] = selected;
+    final productAmount =
+        productState[index].product.price * productState[index].quantity;
+    amount = totalAmountState;
+
+    if (selected) {
+      var isNotSelectAll = !selectProduct.contains(false);
+      amount += productAmount;
+      emit(state.copyWith(
+        totalAmount: amount,
+        selectProducts: selectProduct,
+        selectAll: isNotSelectAll,
+      ));
+    } else {
+      var isNotSelectAll = !selectProduct.contains(false);
+      amount -= productAmount;
+      emit(state.copyWith(
+        totalAmount: amount,
+        selectAll: isNotSelectAll,
+        selectProducts: selectProduct,
+      ));
+    }
+  }
 
   void getCarts() async {
     emit(state.copyWith(cartListState: ViewData.loading()));
@@ -65,7 +190,18 @@ class CartCubit extends Cubit<CartState> {
     if (data.product.isEmpty) {
       emit(state.copyWith(cartListState: ViewData.noData(message: "No Data")));
     } else {
-      emit(state.copyWith(cartListState: ViewData.loaded(data: data)));
+      final selectProduct = <bool>[];
+
+      for (var _ in data.product) {
+        selectProduct.add(false);
+      }
+
+      emit(state.copyWith(
+        cartListState: ViewData.loaded(data: data),
+        totalAmount: 0,
+        selectAll: false,
+        selectProducts: selectProduct,
+      ));
     }
   }
 }

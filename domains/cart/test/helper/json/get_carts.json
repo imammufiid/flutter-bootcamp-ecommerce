@@ -1,0 +1,70 @@
+{
+  "status": true,
+  "code": 200,
+  "message": "Add cart success",
+  "data": {
+    "id": "990b8a3e-ecbd-410a-97f9-c12ab5df0374",
+    "owner": "25aaad18-2164-4d44-8ea8-f96f68768435",
+    "amount": 1190000,
+    "product": [
+      {
+        "product": {
+          "id": "26c18512-56c5-409b-b47b-67352284795f",
+          "name": "Kipas Harapan Model K2 Original Berkualitas dari Bahan Besi Antik Belanda",
+          "owner": "2226cd14-d835-4847-af18-41ae80666c86",
+          "stock": 3000,
+          "price": 80000,
+          "category": {
+            "id": "b6b5fd99-0f37-48e2-87ee-df9be363c170",
+            "name": "Rumah",
+            "image_cover": "https://aurel-store.herokuapp.com/image/1fc7b460-492e-47a0-8a81-5af0c042c440_46d1e8c4-a380-4a85-951d-7fa80d52134a.jpg",
+            "image_icon": "https://aurel-store.herokuapp.com/image/2580b609-22a4-4117-b0bf-31bf7a12bcba_0f9fdbbe-b23e-4bd2-a8db-2f139b5ef076.png"
+          },
+          "image_url": "https://aurel-store.herokuapp.com/image/tono_fd611b5e-6b50-47ce-a2a7-499d138bd4a9.jpg",
+          "description": "<p>Pellentesque eget blandit ligula. Praesent vel interdum magna. Sed venenatis quam sit amet est euismod semper. In ligula metus, imperdiet luctus eros ut, hendrerit viverra orci. Aenean quis ante non ligula vehicula porta eu varius felis. In posuere nibh a feugiat pulvinar.&nbsp;</p><p>Nulla non lacus posuere libero tincidunt consectetur fringilla id neque. Fusce porttitor turpis ac urna maximus, a consequat tellus imperdiet. Morbi molestie posuere diam ac elementum. Etiam rutrum odio ultricies elit condimentum, nec mattis justo matti</p>",
+          "user_info": {
+            "id": "2226cd14-d835-4847-af18-41ae80666c86",
+            "name": "tono",
+            "city": "Medan"
+          },
+          "sold_count": 200,
+          "popularity": 6.67,
+          "created_at": "2022-03-01T13:19:06.482109674Z",
+          "updated_at": "2022-03-01T13:19:06.482165875Z"
+        },
+        "quantity": 4,
+        "created_at": "2022-09-25T03:50:40.564207658Z",
+        "updated_at": "2022-09-25T03:52:02.432108509Z"
+      },
+      {
+        "product": {
+          "id": "be6f29c7-b774-44a9-8c03-978e997a3915",
+          "name": "Karpet Aladin",
+          "owner": "2226cd14-d835-4847-af18-41ae80666c86",
+          "stock": 20,
+          "price": 870000,
+          "category": {
+            "id": "b6b5fd99-0f37-48e2-87ee-df9be363c170",
+            "name": "Rumah",
+            "image_cover": "https://aurel-store.herokuapp.com/image/1fc7b460-492e-47a0-8a81-5af0c042c440_46d1e8c4-a380-4a85-951d-7fa80d52134a.jpg",
+            "image_icon": "https://aurel-store.herokuapp.com/image/2580b609-22a4-4117-b0bf-31bf7a12bcba_0f9fdbbe-b23e-4bd2-a8db-2f139b5ef076.png"
+          },
+          "image_url": "https://aurel-store.herokuapp.com/image/tono_0c5c18f3-f57e-46bb-95d4-2b27762bf9bd.jpg",
+          "description": "<p>Etiam leo felis, viverra ac viverra suscipit, scelerisque id arcu. Integer volutpat aliquet justo nec dictum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque elementum quis libero et interdum. Fusce mollis risus ac aliquet dignissim. Vestibulum ut erat quis felis sodales fringilla a nec tellus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.&nbsp;</p><p>Nulla sed odio pulvinar, eleifend sem at, auctor ante. Nunc congue vel purus sed vulputate. Donec ex nibh, posuere sit amet fringilla vitae, condimentum vitae dolor. Phasellus et lectus in lectus auctor egestas. Integer eget tempus eros. Nullam pharetra sapien mattis massa mattis ultricies. Praesent luctus tincidunt metus, nec sollicitudin odio rhoncus at.</p>",
+          "user_info": {
+            "id": "2226cd14-d835-4847-af18-41ae80666c86",
+            "name": "tono",
+            "city": "Medan"
+          },
+          "sold_count": 5,
+          "popularity": 25.0,
+          "created_at": "2022-03-01T13:19:15.852322461Z",
+          "updated_at": "2022-03-01T13:19:15.852385811Z"
+        },
+        "quantity": 1,
+        "created_at": "2022-09-25T03:52:02.432180751Z",
+        "updated_at": "2022-09-25T03:52:02.432205219Z"
+      }
+    ]
+  }
+}

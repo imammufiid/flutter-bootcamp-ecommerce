@@ -155,22 +155,22 @@ class CartCard extends StatelessWidget {
               Row(
                 children: [
                   const Spacer(),
-                  loadingDeleteProduct
-                      ? const SizedBox()
-                      : IconButton(
-                          onPressed: deleteProductChanged,
-                          icon: const Icon(Icons.remove),
-                        ),
+                  IconButton(
+                    onPressed:
+                        loadingDeleteProduct ? null : deleteProductChanged,
+                    icon: const Icon(
+                      Icons.remove,
+                      color: ColorName.orange,
+                    ),
+                  ),
                   Text(cart.quantity.toString()),
-                  loadingAddProduct
-                      ? const SizedBox()
-                      : IconButton(
-                          onPressed: addProductChanged,
-                          icon: const Icon(
-                            Icons.add,
-                            color: ColorName.orange,
-                          ),
-                        ),
+                  IconButton(
+                    onPressed: loadingAddProduct ? null : addProductChanged,
+                    icon: const Icon(
+                      Icons.add,
+                      color: ColorName.orange,
+                    ),
+                  ),
                 ],
               ),
             ],
