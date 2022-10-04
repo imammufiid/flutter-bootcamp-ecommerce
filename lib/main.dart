@@ -9,6 +9,8 @@ import 'package:auth/presentation/ui/sign_up_screen.dart';
 import 'package:cart_feature/presentation/bloc/bloc.dart';
 import 'package:cart_feature/presentation/ui/cart_list_screen.dart';
 import 'package:common/utils/navigation/argument/arguments.dart';
+import 'package:common/utils/navigation/argument/payment/payment_argument.dart';
+import 'package:common/utils/navigation/argument/payment/payment_va_argument.dart';
 import 'package:common/utils/navigation/navigation_helper.dart';
 import 'package:common/utils/navigation/router/app_routes.dart';
 import 'package:dependencies/bloc/bloc.dart';
@@ -27,6 +29,10 @@ import 'package:onboarding/presentation/bloc/splash_bloc/splash_cubit.dart';
 import 'package:onboarding/presentation/ui/on_boarding_screen.dart';
 import 'package:onboarding/presentation/ui/splash_screen.dart';
 import 'package:auth/presentation/ui/sign_in_screen.dart';
+import 'package:payment_feature/presentation/bloc/bloc.dart';
+import 'package:payment_feature/presentation/ui/payment_method_screen.dart';
+import 'package:payment_feature/presentation/ui/payment_screen.dart';
+import 'package:payment_feature/presentation/ui/payment_va_screen.dart';
 import 'injections/injections.dart';
 import 'package:dependencies/get_it/get_it.dart';
 
@@ -58,6 +64,7 @@ class MyApp extends StatelessWidget {
         ),
         navigatorKey: NavigationHelperImpl.navigatorKey,
         onGenerateRoute: (RouteSettings settings) {
+          final argument = settings.arguments;
           switch (settings.name) {
             case AppRoutes.splash:
               return MaterialPageRoute(builder: (_) => SplashScreen());
@@ -135,7 +142,6 @@ class MyApp extends StatelessWidget {
                 ),
               );
             case AppRoutes.detailProduct:
-              final argument = settings.arguments as DetailProductArgument;
               return MaterialPageRoute(
                 builder: (_) => BlocProvider(
                   create: (_) => ProductDetailCubit(
@@ -143,7 +149,8 @@ class MyApp extends StatelessWidget {
                     getSellerUseCase: sl(),
                     addToCartUseCase: sl(),
                   ),
-                  child: DetailProductScreen(argument: argument),
+                  child: DetailProductScreen(
+                      argument: argument as DetailProductArgument),
                 ),
               );
             case AppRoutes.cartList:
@@ -155,6 +162,34 @@ class MyApp extends StatelessWidget {
                     deleteCartUseCase: sl(),
                   ),
                   child: const CartListScreen(),
+                ),
+              );
+            case AppRoutes.payment:
+              return MaterialPageRoute(
+                builder: (_) => BlocProvider<PaymentCubit>(
+                  create: (_) => PaymentCubit(
+                    getAllPaymentMethodUseCase: sl(),
+                    createTransactionUseCase: sl(),
+                  ),
+                  child: PaymentScreen(
+                    argument: argument as PaymentArgument,
+                  ),
+                ),
+              );
+            case AppRoutes.paymentMethod:
+              return MaterialPageRoute(
+                builder: (_) => BlocProvider<PaymentCubit>(
+                  create: (_) => PaymentCubit(
+                    getAllPaymentMethodUseCase: sl(),
+                    createTransactionUseCase: sl(),
+                  ),
+                  child: const PaymentMethodScreen(),
+                ),
+              );
+            case AppRoutes.paymentVa:
+              return MaterialPageRoute(
+                builder: (_) => PaymentVAScreen(
+                  argument: argument as PaymentVAArgument,
                 ),
               );
             default:

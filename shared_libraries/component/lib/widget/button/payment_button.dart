@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:component/widget/button/custom_button.dart';
 import 'package:resources/colors.gen.dart';
 import 'package:dependencies/flutter_screenutil/flutter_screenutil.dart';
-import 'package:component/widget/divider/divider.dart';
+import 'package:component/widget/divider/custom_divider.dart';
 
 class PaymentButton extends StatelessWidget {
   final VoidCallback onPressedBuy;

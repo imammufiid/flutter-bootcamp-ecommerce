@@ -5,7 +5,7 @@ import 'package:common/utils/navigation/router/product_routes.dart';
 import 'package:common/utils/state/view_data_state.dart';
 import 'package:component/widget/appbar/custom_appbar.dart';
 import 'package:component/widget/button/custom_button.dart';
-import 'package:component/widget/divider/divider.dart';
+import 'package:component/widget/divider/custom_divider.dart';
 import 'package:component/widget/progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:component/widget/stack/loading_stack.dart';
 import 'package:component/widget/toast/custom_toast.dart';

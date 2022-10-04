@@ -1,14 +1,16 @@
 import 'package:cart_feature/presentation/bloc/bloc.dart';
 import 'package:common/utils/extensions/money_extension.dart';
+import 'package:common/utils/navigation/router/cart_router.dart';
 import 'package:common/utils/state/view_data_state.dart';
 import 'package:component/widget/button/custom_button.dart';
 import 'package:component/widget/card/cart_card.dart';
-import 'package:component/widget/divider/divider.dart';
+import 'package:component/widget/divider/custom_divider.dart';
 import 'package:component/widget/progress_indicator/custom_circular_progress_indicator.dart';
 import 'package:component/widget/stack/loading_stack.dart';
 import 'package:component/widget/toast/custom_toast.dart';
 import 'package:dependencies/bloc/bloc.dart';
 import 'package:dependencies/flutter_screenutil/flutter_screenutil.dart';
+import 'package:dependencies/get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:resources/colors.gen.dart';
 import 'package:component/widget/checkbox/custom_check_box.dart';
@@ -21,6 +23,8 @@ class CartListScreen extends StatefulWidget {
 }
 
 class _CartListScreenState extends State<CartListScreen> {
+  final _cartRouter = sl<CartRouter>();
+
   @override
   void initState() {
     super.initState();
@@ -211,7 +215,8 @@ class _CartListScreenState extends State<CartListScreen> {
                                         : ColorName.orange,
                                     onTap: state.totalAmount == 0
                                         ? null
-                                        : () => {},
+                                        : () => _cartRouter.navigateToPayment(
+                                            state.totalAmount),
                                   ),
                                 ),
                               ],
