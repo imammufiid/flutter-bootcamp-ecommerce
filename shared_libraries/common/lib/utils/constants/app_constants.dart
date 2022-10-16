@@ -42,6 +42,12 @@ class AppApi {
   String get seller => "customer/seller/";
 
   String get cart => 'customer/cart';
+
+  String get paymentMethod => 'customer/payment/method';
+
+  String get createTransaction => 'customer/transaction';
+
+  String get createPayment => 'customer/payment';
 }
 
 class ErrorKey {

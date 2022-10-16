@@ -53,21 +53,31 @@ class CartCubit extends Cubit<CartState> {
       ));
     } else {
       int amount = 0;
-      if (state.selectAll || state.selectProducts[index]) {
-        amount = state.totalAmount - data.product[index].product.price;
+      if (data.product.length == 1) {
+        emit(state.copyWith(
+          totalAmount: data.product[0].product.price * data.product[0].quantity,
+          deleteCartState: ViewData.loaded(data: data),
+          cartListState: ViewData.loaded(data: data),
+        ));
       } else {
-        amount = state.totalAmount;
-      }
+        if (state.selectAll || state.selectProducts[index]) {
+          amount = state.totalAmount - data.product[index].product.price;
+        } else {
+          amount = state.totalAmount;
+        }
 
-      if (!state.selectProducts[index]) {
-        amount = state.totalAmount;
-      }
+        if (!state.selectProducts[index]) {
+          amount = state.totalAmount;
+        }
 
-      emit(state.copyWith(
-        totalAmount: amount,
-        deleteCartState: ViewData.loaded(data: data),
-        cartListState: ViewData.loaded(data: data),
-      ));
+        print(amount);
+
+        emit(state.copyWith(
+          totalAmount: amount,
+          deleteCartState: ViewData.loaded(data: data),
+          cartListState: ViewData.loaded(data: data),
+        ));
+      }
     }
   }
 

@@ -23,23 +23,54 @@ class PaymentCubit extends Cubit<PaymentState> {
 
   void selectPaymentMethod(PaymentMethodArgument argument) {}
 
-  void getAllPaymentMethod() async {}
+  void getAllPaymentMethod() async {
+    emit(state.copyWith(paymentMethodState: ViewData.loading()));
+    final result = await getAllPaymentMethodUseCase.call(const NoParams());
+    return result.fold(
+      (failure) => _onFailureGetPaymentMethod(failure),
+      (data) => _onSuccessGetPaymentMethod(data),
+    );
+  }
 
   Future<void> _onFailureGetPaymentMethod(
     FailureResponse failure,
-  ) async {}
+  ) async {
+    emit(state.copyWith(
+        paymentMethodState:
+            ViewData.error(message: failure.errorMessage, failure: failure)));
+  }
 
   Future<void> _onSuccessGetPaymentMethod(
     List<PaymentDataEntity> data,
-  ) async {}
+  ) async {
+    if (data.isEmpty) {
+      emit(state.copyWith(
+          paymentMethodState: ViewData.noData(message: "No Data")));
+    } else {
+      emit(state.copyWith(paymentMethodState: ViewData.loaded(data: data)));
+    }
+  }
 
-  void createTransaction(String paymentCode) async {}
+  void createTransaction(String paymentCode) async {
+    emit(state.copyWith(createPaymentState: ViewData.loading()));
+    final result = await createTransactionUseCase.call(paymentCode);
+    return result.fold(
+      (failure) => _onFailureCreateTransaction(failure),
+      (data) => _onSuccessCreateTransaction(data),
+    );
+  }
 
   Future<void> _onFailureCreateTransaction(
     FailureResponse failure,
-  ) async {}
+  ) async {
+    emit(state.copyWith(
+        createPaymentState:
+            ViewData.error(message: failure.errorMessage, failure: failure)));
+  }
 
   Future<void> _onSuccessCreateTransaction(
     CreatePaymentDataEntity data,
-  ) async {}
+  ) async {
+    emit(state.copyWith(createPaymentState: ViewData.loaded(data: data)));
+  }
 }

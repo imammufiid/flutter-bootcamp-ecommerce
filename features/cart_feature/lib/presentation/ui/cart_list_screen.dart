@@ -216,7 +216,7 @@ class _CartListScreenState extends State<CartListScreen> {
                                     onTap: state.totalAmount == 0
                                         ? null
                                         : () => _cartRouter.navigateToPayment(
-                                            state.totalAmount),
+                                            state.totalAmount, 0),
                                   ),
                                 ),
                               ],

@@ -3,7 +3,7 @@ import 'package:common/utils/navigation/navigation_helper.dart';
 import 'package:common/utils/navigation/router/app_routes.dart';
 
 abstract class CartRouter {
-  void navigateToPayment(int totalAmount);
+  void navigateToPayment(int totalAmount, int totalProduct);
 }
 
 class CartRouterImpl implements CartRouter {
@@ -14,8 +14,12 @@ class CartRouterImpl implements CartRouter {
   });
 
   @override
-  void navigateToPayment(int totalAmount) => navigationHelper.pushNamed(
+  void navigateToPayment(int totalAmount, int totalProduct) =>
+      navigationHelper.pushNamed(
         AppRoutes.payment,
-        arguments: PaymentArgument(totalAmount: totalAmount),
+        arguments: PaymentArgument(
+          totalAmount: totalAmount,
+          totalProduct: totalProduct,
+        ),
       );
 }
