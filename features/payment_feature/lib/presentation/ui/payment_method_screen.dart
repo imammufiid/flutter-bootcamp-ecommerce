@@ -18,6 +18,8 @@ class PaymentMethodScreen extends StatefulWidget {
 }
 
 class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
+  final _paymentRouter = sl<PaymentRouter>();
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +28,10 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
 
   void _loadPaymentMethod(BuildContext context) {
     context.read<PaymentCubit>().getAllPaymentMethod();
+  }
+
+  void _selectedPaymentRoute(PaymentMethodArgument argument) {
+    _paymentRouter.selectPayment(argument);
   }
 
   @override
@@ -62,36 +68,39 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                 itemCount: payments.length,
                 itemBuilder: (context, index) {
                   final payment = payments[index];
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                  return GestureDetector(
+                    onTap: () => _selectedPaymentRoute(PaymentMethodArgument(
+                        bankName: payment.name, paymentCode: payment.code)),
+                    child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              margin: const EdgeInsets.only(right: 14),
-                              width: 60.w,
-                              height: 40.h,
-                              color: ColorName.orange,
-                            ),
-                            Expanded(
-                              child: Text(
-                                payment.name,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 10.sp,
+                            Row(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(right: 14),
+                                  width: 60.w,
+                                  height: 40.h,
+                                  color: ColorName.orange,
                                 ),
-                              ),
+                                Expanded(
+                                  child: Text(
+                                    payment.name,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10.sp,
+                                    ),
+                                  ),
+                                ),
+                                const Icon(Icons.keyboard_arrow_right)
+                              ],
                             ),
-                            const Icon(Icons.keyboard_arrow_right)
+                            const SizedBox(height: 10),
+                            const CustomDivider(height: 2)
                           ],
-                        ),
-                        const SizedBox(height: 10),
-                        const CustomDivider(height: 2)
-                      ],
-                    )
+                        )),
                   );
                 },
               );

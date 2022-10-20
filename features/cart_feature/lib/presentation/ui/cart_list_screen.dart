@@ -3,6 +3,7 @@ import 'package:common/utils/extensions/money_extension.dart';
 import 'package:common/utils/navigation/router/cart_router.dart';
 import 'package:common/utils/state/view_data_state.dart';
 import 'package:component/widget/button/custom_button.dart';
+import 'package:component/widget/button/payment_transaction_button.dart';
 import 'package:component/widget/card/cart_card.dart';
 import 'package:component/widget/divider/custom_divider.dart';
 import 'package:component/widget/progress_indicator/custom_circular_progress_indicator.dart';
@@ -169,63 +170,12 @@ class _CartListScreenState extends State<CartListScreen> {
                       SizedBox(height: 20.h)
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      color: ColorName.white,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CustomDivider(),
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Total Harga",
-                                        style: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      Text(
-                                        state.totalAmount.toIDR(),
-                                        style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w700,
-                                            color: ColorName.orange),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 15.w),
-                                Expanded(
-                                  child: CustomButton(
-                                    buttonText: "Beli",
-                                    buttonColor: state.totalAmount == 0
-                                        ? ColorName.textFieldHintGrey
-                                        : ColorName.orange,
-                                    onTap: state.totalAmount == 0
-                                        ? null
-                                        : () => _cartRouter.navigateToPayment(
-                                            state.totalAmount, 0),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
+                  PaymentTransactionButton(
+                    total: state.totalAmount,
+                    textButton: "Beli",
+                    paymentTap: () =>
+                        _cartRouter.navigateToPayment(state.totalAmount, 0),
+                  ),
                 ],
               );
             } else if (cartListStatus.isError) {

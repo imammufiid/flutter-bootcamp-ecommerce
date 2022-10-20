@@ -19,30 +19,34 @@ class PaymentRepositoryImpl implements PaymentRepository {
       String paymentCode) async {
     try {
       final response = await remoteSource.createTransaction(paymentCode);
-      final transactions =
+
+      final data =
           mapper.mapListCreateTransactionDataDtoToEntity(response.data);
+
       bool success = false;
       String errorMessage = "";
-      CreatePaymentDataEntity data = const CreatePaymentDataEntity();
-      for (var i in transactions) {
-        final createPayment = await remoteSource.createPayment(i.transactionId);
-        if (createPayment.status ?? 0 == 200) {
+      CreatePaymentDataEntity paymentData = const CreatePaymentDataEntity();
+      for (var i in data) {
+        final payment = await remoteSource.createPayment(i.transactionId);
+        final statusCode = payment.code ?? 0;
+        if (statusCode == 200) {
           success = true;
-          final result =
-              mapper.mapCreatePaymentDataDtoToEntity(createPayment.data);
-          data = result;
+          paymentData = mapper.mapCreatePaymentDataDtoToEntity(payment.data);
         } else {
           success = false;
-          data = const CreatePaymentDataEntity();
-          errorMessage = createPayment.message ?? "";
+          errorMessage = payment.message.toString();
           break;
         }
       }
 
       if (success) {
-        return Right(data);
+        return Right(paymentData);
       } else {
-        return Left(FailureResponse(errorMessage: errorMessage));
+        return Left(
+          FailureResponse(
+            errorMessage: errorMessage,
+          ),
+        );
       }
     } on DioError catch (error) {
       return Left(

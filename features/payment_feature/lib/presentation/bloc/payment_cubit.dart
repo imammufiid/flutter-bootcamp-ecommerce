@@ -21,7 +21,9 @@ class PaymentCubit extends Cubit<PaymentState> {
           createPaymentState: ViewData.initial(),
         ));
 
-  void selectPaymentMethod(PaymentMethodArgument argument) {}
+  void selectPaymentMethod(PaymentMethodArgument argument) {
+    emit(state.copyWith(selectedPaymentMethod: argument));
+  }
 
   void getAllPaymentMethod() async {
     emit(state.copyWith(paymentMethodState: ViewData.loading()));

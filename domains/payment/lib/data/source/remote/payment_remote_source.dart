@@ -1,6 +1,5 @@
 import 'package:common/utils/constants/app_constants.dart';
 import 'package:dependencies/dio/dio.dart';
-import 'package:payment/data/mapper/payment_mapper.dart';
 import 'package:payment/data/model/all_payment_response_dto.dart';
 import 'package:payment/data/model/create_payment_response_dto.dart';
 import 'package:payment/data/model/create_transaction_response_dto.dart';
@@ -23,7 +22,7 @@ class PaymentRemoteSourceImpl implements PaymentRemoteSource {
   @override
   Future<CreatePaymentResponseDto> createPayment(String transactionId) async {
     try {
-      final response = await dio.get(
+      final response = await dio.post(
         AppConstants.appApi.createPayment,
         queryParameters: {"transaction_id": transactionId},
       );
@@ -37,7 +36,7 @@ class PaymentRemoteSourceImpl implements PaymentRemoteSource {
   Future<CreateTransactionResponseDto> createTransaction(
       String paymentCode) async {
     try {
-      final response = await dio.get(
+      final response = await dio.post(
         AppConstants.appApi.createTransaction,
         queryParameters: {"payment": paymentCode},
       );
