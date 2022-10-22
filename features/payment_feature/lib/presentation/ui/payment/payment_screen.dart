@@ -16,7 +16,8 @@ import 'package:dependencies/flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:dependencies/get_it/get_it.dart';
 import 'package:payment/domain/entity/response/create_payment_entity.dart';
-import 'package:payment_feature/presentation/bloc/bloc.dart';
+import 'package:payment_feature/presentation/bloc/payment/bloc.dart';
+import 'package:payment_feature/presentation/bloc/payment/payment_cubit.dart';
 import 'package:resources/colors.gen.dart';
 import 'package:component/widget/button/payment_button.dart';
 

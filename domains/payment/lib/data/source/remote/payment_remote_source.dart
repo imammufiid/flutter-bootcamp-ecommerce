@@ -3,6 +3,7 @@ import 'package:dependencies/dio/dio.dart';
 import 'package:payment/data/model/all_payment_response_dto.dart';
 import 'package:payment/data/model/create_payment_response_dto.dart';
 import 'package:payment/data/model/create_transaction_response_dto.dart';
+import 'package:payment/data/model/product_history_response_dto.dart';
 
 abstract class PaymentRemoteSource {
   const PaymentRemoteSource();
@@ -12,6 +13,8 @@ abstract class PaymentRemoteSource {
   Future<CreateTransactionResponseDto> createTransaction(String paymentCode);
 
   Future<CreatePaymentResponseDto> createPayment(String transactionId);
+
+  Future<ProductHistoryResponseDto> getHistory();
 }
 
 class PaymentRemoteSourceImpl implements PaymentRemoteSource {
@@ -51,6 +54,16 @@ class PaymentRemoteSourceImpl implements PaymentRemoteSource {
     try {
       final response = await dio.get(AppConstants.appApi.paymentMethod);
       return AllPaymentResponseDto.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ProductHistoryResponseDto> getHistory() async {
+    try {
+      final response = await dio.get(AppConstants.appApi.history);
+      return ProductHistoryResponseDto.fromJson(response.data);
     } catch (e) {
       rethrow;
     }

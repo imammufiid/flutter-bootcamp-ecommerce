@@ -29,10 +29,11 @@ import 'package:onboarding/presentation/bloc/splash_bloc/splash_cubit.dart';
 import 'package:onboarding/presentation/ui/on_boarding_screen.dart';
 import 'package:onboarding/presentation/ui/splash_screen.dart';
 import 'package:auth/presentation/ui/sign_in_screen.dart';
-import 'package:payment_feature/presentation/bloc/bloc.dart';
-import 'package:payment_feature/presentation/ui/payment_method_screen.dart';
-import 'package:payment_feature/presentation/ui/payment_screen.dart';
-import 'package:payment_feature/presentation/ui/payment_va_screen.dart';
+import 'package:payment_feature/presentation/bloc/history/bloc.dart';
+import 'package:payment_feature/presentation/bloc/payment/bloc.dart';
+import 'package:payment_feature/presentation/ui/payment/payment_method_screen.dart';
+import 'package:payment_feature/presentation/ui/payment/payment_screen.dart';
+import 'package:payment_feature/presentation/ui/payment/payment_va_screen.dart';
 import 'injections/injections.dart';
 import 'package:dependencies/get_it/get_it.dart';
 
@@ -117,7 +118,12 @@ class MyApp extends StatelessWidget {
                       create: (_) => UserCubit(getUserUseCase: sl())..getUser(),
                     ),
                     BlocProvider(
-                        create: (_) => LogoutCubit(logoutUseCase: sl()))
+                      create: (_) => LogoutCubit(logoutUseCase: sl()),
+                    ),
+                    BlocProvider<HistoryCubit>(
+                      create: (_) =>
+                          HistoryCubit(getHistoryUseCase: sl()),
+                    ),
                   ],
                   child: const BottomNavigation(),
                 ),
