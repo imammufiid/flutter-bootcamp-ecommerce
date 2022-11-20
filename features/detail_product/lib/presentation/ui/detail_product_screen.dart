@@ -37,12 +37,25 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   void initState() {
     super.initState();
     _loadProductDetail();
+    _getProductFavorite(widget.argument.imageUrl);
   }
 
   void _closeBottomSheet(BuildContext context) => Navigator.pop(context);
 
   void _loadProductDetail() {
     context.read<ProductDetailCubit>().getProduct(widget.argument.productId);
+  }
+
+  void _saveProductToFavorite(ProductDetailDataEntity data) {
+    context.read<ProductDetailCubit>().saveProduct(data);
+  }
+
+  void _deleteProductToFavorite(String productURL) {
+    context.read<ProductDetailCubit>().deleteProduct(productURL);
+  }
+
+  void _getProductFavorite(String imageUrl) {
+    context.read<ProductDetailCubit>().getProductFavorite(imageUrl);
   }
 
   void _addProductToCart(AddToCartEntity body) {
@@ -100,10 +113,23 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                       ),
                                     ),
                                   ),
-                                  const Icon(
-                                    Icons.star_border_outlined,
-                                    color: ColorName.orange,
-                                  )
+                                  BlocBuilder<ProductDetailCubit,
+                                          ProductDetailState>(
+                                      builder: (context, state) {
+                                    final isFavorite = state.isFavorite;
+                                    return GestureDetector(
+                                      onTap: () => isFavorite
+                                          ? _deleteProductToFavorite(
+                                              product.imageUrl)
+                                          : _saveProductToFavorite(product),
+                                      child: Icon(
+                                        isFavorite
+                                            ? Icons.star
+                                            : Icons.star_border_outlined,
+                                        color: ColorName.orange,
+                                      ),
+                                    );
+                                  })
                                 ],
                               ),
                               SizedBox(height: 8.h),

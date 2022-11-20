@@ -8,25 +8,44 @@ class ProductDetailState extends Equatable {
   final ViewData<ProductDetailDataEntity> productState;
   final ViewData<SellerDataEntity> sellerState;
   final ViewData<AddToCartEntity> addToCartState;
+  final ViewData<bool> saveProductState;
+  final ViewData<bool> deleteProductState;
+  final bool isFavorite;
 
   const ProductDetailState({
     required this.productState,
     required this.sellerState,
     required this.addToCartState,
+    required this.saveProductState,
+    required this.deleteProductState,
+    required this.isFavorite,
   });
 
   ProductDetailState copyWith({
     ViewData<ProductDetailDataEntity>? productState,
     ViewData<SellerDataEntity>? sellerState,
     ViewData<AddToCartEntity>? addToCartState,
+    ViewData<bool>? saveProductState,
+    ViewData<bool>? deleteProductState,
+    bool? isFavorite,
   }) {
     return ProductDetailState(
       productState: productState ?? this.productState,
       sellerState: sellerState ?? this.sellerState,
       addToCartState: addToCartState ?? this.addToCartState,
+      saveProductState: saveProductState ?? this.saveProductState,
+      deleteProductState: deleteProductState ?? this.deleteProductState,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 
   @override
-  List<Object?> get props => [productState, sellerState, addToCartState];
+  List<Object?> get props => [
+        productState,
+        sellerState,
+        addToCartState,
+        saveProductState,
+        deleteProductState,
+        isFavorite,
+      ];
 }

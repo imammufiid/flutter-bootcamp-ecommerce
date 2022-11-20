@@ -121,8 +121,7 @@ class MyApp extends StatelessWidget {
                       create: (_) => LogoutCubit(logoutUseCase: sl()),
                     ),
                     BlocProvider<HistoryCubit>(
-                      create: (_) =>
-                          HistoryCubit(getHistoryUseCase: sl()),
+                      create: (_) => HistoryCubit(getHistoryUseCase: sl()),
                     ),
                   ],
                   child: const BottomNavigation(),
@@ -154,6 +153,9 @@ class MyApp extends StatelessWidget {
                     getProductDetailUseCase: sl(),
                     getSellerUseCase: sl(),
                     addToCartUseCase: sl(),
+                    saveProductUseCase: sl(),
+                    deleteProductUseCase: sl(),
+                    getFavoriteProductByUrlUseCase: sl(),
                   ),
                   child: DetailProductScreen(
                       argument: argument as DetailProductArgument),
