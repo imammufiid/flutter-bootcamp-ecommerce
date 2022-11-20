@@ -3,6 +3,7 @@ import 'package:common/utils/error/failure_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dependencies/dio/dio.dart';
 import 'package:product/data/mapper/product_mapper.dart';
+import 'package:product/data/source/local/product_local_source.dart';
 import 'package:product/data/source/remote/product_remote_source.dart';
 import 'package:product/domain/entity/response/banner_data_entity.dart';
 import 'package:product/domain/entity/response/product_category_entity.dart';
@@ -13,10 +14,12 @@ import 'package:product/domain/repository/product_repository.dart';
 
 class ProductRepositoryImpl extends ProductRepository {
   final ProductRemoteSource remoteSource;
+  final ProductLocalSource localSource;
   final ProductMapper mapper;
 
   ProductRepositoryImpl({
     required this.remoteSource,
+    required this.localSource,
     required this.mapper,
   });
 
@@ -100,6 +103,47 @@ class ProductRepositoryImpl extends ProductRepository {
                   error.response.toString(),
         ),
       );
+    }
+  }
+
+  @override
+  Stream<List<ProductDetailDataEntity>> getFavProducts() {
+    return localSource
+        .getFavProducts()
+        .map((event) => mapper.mapListProductDetailTableDataToEntity(event));
+  }
+
+  @override
+  Future<Either<FailureResponse, bool>> save(
+      ProductDetailDataEntity data) async {
+    try {
+      final result = await localSource
+          .save(mapper.mapProductDetailEntityToCompanion(data));
+      return Right(result);
+    } catch (error) {
+      return Left(FailureResponse(errorMessage: error.toString()));
+    }
+  }
+
+  @override
+  Future<Either<FailureResponse, bool>> deleteProduct(String productUrl) async {
+    try {
+      final response = await localSource.deleteProduct(productUrl);
+      return Right(response);
+    } catch (error) {
+      return Left(FailureResponse(errorMessage: error.toString()));
+    }
+  }
+
+  @override
+  Future<Either<FailureResponse, ProductDetailDataEntity>>
+      getFavoriteProductByUrl(String productUrl) async {
+    try {
+      final response = await localSource.getFavoriteProductByUrl(productUrl);
+      final data = mapper.mapProductDetailTableToEntity(response);
+      return Right(data);
+    } catch (error) {
+      return Left(FailureResponse(errorMessage: error.toString()));
     }
   }
 }

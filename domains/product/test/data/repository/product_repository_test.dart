@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:product/data/mapper/product_mapper.dart';
 import 'package:product/data/repository/product_repository_impl.dart';
+import 'package:product/data/source/local/product_local_source.dart';
 import 'package:product/data/source/remote/product_remote_source.dart';
 import 'package:product/domain/entity/response/banner_data_entity.dart';
 import 'package:product/domain/entity/response/product_category_entity.dart';
@@ -18,16 +19,21 @@ void main() => testProductRepositoryTest();
 
 class MockProductRemoteSource extends Mock implements ProductRemoteSource {}
 
+class MockProductLocalSource extends Mock implements ProductLocalSource {}
+
 void testProductRepositoryTest() {
   late final ProductRemoteSource _mockProductRemoteSource;
   late final ProductMapper _mockProductMapper;
   late final ProductRepository _productRepository;
+  late final ProductLocalSource _mockProductLocalSource;
 
   setUpAll(() {
     _mockProductRemoteSource = MockProductRemoteSource();
     _mockProductMapper = ProductMapper();
+    _mockProductLocalSource = MockProductLocalSource();
     _productRepository = ProductRepositoryImpl(
       remoteSource: _mockProductRemoteSource,
+      localSource: _mockProductLocalSource,
       mapper: _mockProductMapper,
     );
   });
