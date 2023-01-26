@@ -23,6 +23,10 @@ class AppApi {
 
   String get baseUrl => 'https://aurel-store.herokuapp.com/v1/';
 
+  String get baseUrlDevelopment => 'https://aurel-store.herokuapp.com/v1/';
+
+  String get baseUrlProduction => 'https://aurel-store.com/v1/';
+
   String get signUp => 'user/customer/register';
 
   String get signIn => 'user/login';

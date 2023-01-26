@@ -14,11 +14,11 @@ import 'package:common/utils/navigation/argument/payment/payment_va_argument.dar
 import 'package:common/utils/navigation/navigation_helper.dart';
 import 'package:common/utils/navigation/router/app_routes.dart';
 import 'package:dependencies/bloc/bloc.dart';
-import 'package:dependencies/firebase/firebase.dart';
 import 'package:detail_product/presentation/bloc/product_detail_bloc/bloc.dart';
 import 'package:detail_product/presentation/ui/detail_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dependencies/flutter_screenutil/flutter_screenutil.dart';
+import 'package:common/utils/setup/app_setup.dart';
 import 'package:home_page/presentation/bloc/banner_bloc/banner_cubit.dart';
 import 'package:home_page/presentation/bloc/bottom_navigation_bloc/bottom_navigation_cubit.dart';
 import 'package:home_page/presentation/bloc/product_category_bloc/product_category_bloc.dart';
@@ -34,15 +34,8 @@ import 'package:payment_feature/presentation/bloc/payment/bloc.dart';
 import 'package:payment_feature/presentation/ui/payment/payment_method_screen.dart';
 import 'package:payment_feature/presentation/ui/payment/payment_screen.dart';
 import 'package:payment_feature/presentation/ui/payment/payment_va_screen.dart';
-import 'injections/injections.dart';
 import 'package:dependencies/get_it/get_it.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await Injections().initialize();
-  runApp(const MyApp());
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -52,6 +45,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (_, __) => MaterialApp(
+        debugShowCheckedModeBanner: Config.isDebug,
         title: 'Flutter E Commerce',
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -103,16 +97,16 @@ class MyApp extends StatelessWidget {
                     BlocProvider(create: (_) => BottomNavigationCubit()),
                     BlocProvider(
                       create: (_) =>
-                          BannerCubit(bannerUseCase: sl())..getBanners(),
+                      BannerCubit(bannerUseCase: sl())..getBanners(),
                     ),
                     BlocProvider(
                       create: (_) =>
-                          ProductCubit(productUseCase: sl())..getProducts(),
+                      ProductCubit(productUseCase: sl())..getProducts(),
                     ),
                     BlocProvider(
                       create: (_) =>
-                          ProductCategoryCubit(productCategoryUseCase: sl())
-                            ..getProductCategories(),
+                      ProductCategoryCubit(productCategoryUseCase: sl())
+                        ..getProductCategories(),
                     ),
                     BlocProvider(
                       create: (_) => UserCubit(getUserUseCase: sl())..getUser(),

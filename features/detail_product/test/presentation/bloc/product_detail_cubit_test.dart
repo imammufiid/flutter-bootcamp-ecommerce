@@ -6,8 +6,11 @@ import 'package:dependencies/dartz/dartz.dart';
 import 'package:detail_product/presentation/bloc/product_detail_bloc/bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:product/domain/usecase/delete_product_usecase.dart';
+import 'package:product/domain/usecase/get_favorite_product_by_url_usecase.dart';
 import 'package:product/domain/usecase/get_product_detail_usecase.dart';
 import 'package:product/domain/usecase/get_seller_usecase.dart';
+import 'package:product/domain/usecase/save_product_usecase.dart';
 
 import '../../helper/entity/banner_entity_dummy.dart';
 
@@ -20,15 +23,29 @@ class MockGetSellerUseCase extends Mock implements GetSellerUseCase {}
 
 class MockAddToCartUseCase extends Mock implements AddToCartUseCase {}
 
+class MockSaveProductUseCase extends Mock implements SaveProductUseCase {}
+
+class MockDeleteProductUseCase extends Mock implements DeleteProductUseCase {}
+
+class MockGetFavoriteProductByUrlUseCase extends Mock
+    implements GetFavoriteProductByUrlUseCase {}
+
 void testProductDetail() {
   late final GetProductDetailUseCase mockGetProductDetailUseCase;
   late final GetSellerUseCase mockGetSellerUseCase;
   late final MockAddToCartUseCase mockAddToCartUseCase;
+  late final MockSaveProductUseCase mockSaveProductUseCase;
+  late final MockDeleteProductUseCase mockDeleteProductUseCase;
+  late final MockGetFavoriteProductByUrlUseCase
+      mockGetFavoriteProductByUrlUseCase;
 
   setUpAll(() {
     mockGetProductDetailUseCase = MockGetProductDetailUseCase();
     mockGetSellerUseCase = MockGetSellerUseCase();
     mockAddToCartUseCase = MockAddToCartUseCase();
+    mockSaveProductUseCase = MockSaveProductUseCase();
+    mockDeleteProductUseCase = MockDeleteProductUseCase();
+    mockGetFavoriteProductByUrlUseCase = MockGetFavoriteProductByUrlUseCase();
   });
 
   group('Product Detail Cubit', () {
@@ -38,6 +55,9 @@ void testProductDetail() {
         getProductDetailUseCase: mockGetProductDetailUseCase,
         getSellerUseCase: mockGetSellerUseCase,
         addToCartUseCase: mockAddToCartUseCase,
+        saveProductUseCase: mockSaveProductUseCase,
+        deleteProductUseCase: mockDeleteProductUseCase,
+        getFavoriteProductByUrlUseCase: mockGetFavoriteProductByUrlUseCase,
       ),
       expect: () => [],
     );
@@ -62,6 +82,9 @@ void testProductDetail() {
           getProductDetailUseCase: mockGetProductDetailUseCase,
           getSellerUseCase: mockGetSellerUseCase,
           addToCartUseCase: mockAddToCartUseCase,
+          saveProductUseCase: mockSaveProductUseCase,
+          deleteProductUseCase: mockDeleteProductUseCase,
+          getFavoriteProductByUrlUseCase: mockGetFavoriteProductByUrlUseCase,
         );
       },
       act: (ProductDetailCubit bloc) => bloc.getProduct("1"),

@@ -6,6 +6,7 @@ import 'package:authentication/domain/entity/body/auth_request_entity.dart';
 import 'package:common/utils/constants/app_constants.dart';
 import 'package:common/utils/navigation/router/auth_router.dart';
 import 'package:common/utils/state/view_data_state.dart';
+import 'package:component/widget/base/base_screen.dart';
 import 'package:component/widget/button/custom_button.dart';
 import 'package:component/widget/stack/loading_stack.dart';
 import 'package:component/widget/text_field/custom_text_field.dart';
@@ -17,9 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:dependencies/get_it/get_it.dart';
 import 'package:resources/colors.gen.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatelessWidget with BaseScreen {
   SignInScreen({Key? key}) : super(key: key);
-  final AuthRouter _authRouter = sl();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -31,7 +31,7 @@ class SignInScreen extends StatelessWidget {
         listener: (context, state) {
           final status = state.signInState.status;
           if (status.isHasData) {
-            _authRouter.navigateToHome();
+            authRouter.navigateToHome();
           }
           if (status.isError) {
             if (state.signInState.message != AppConstants.errorKey.username &&
@@ -109,7 +109,7 @@ class SignInScreen extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               decoration: TextDecoration.underline),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => _authRouter.navigateToSignUp(),
+                            ..onTap = () => authRouter.navigateToSignUp(),
                         )
                       ],
                     ),

@@ -1,4 +1,5 @@
 import 'package:common/utils/constants/app_constants.dart';
+import 'package:common/utils/setup/app_setup.dart';
 import 'package:core/local/database/database_module.dart';
 import 'package:core/network/dio_handler.dart';
 import 'package:dependencies/dio/dio.dart';
@@ -13,7 +14,7 @@ class RegisterCoreModule {
     sl.registerLazySingleton<Dio>(() => sl<DioHandler>().dio);
     sl.registerLazySingleton<DioHandler>(() => DioHandler(
           sharedPreferences: sl(),
-          apiBaseUrl: AppConstants.appApi.baseUrl,
+          apiBaseUrl: Config.baseUrl,
         ));
 
     sl.registerLazySingleton<MyDatabase>(() => MyDatabase());
